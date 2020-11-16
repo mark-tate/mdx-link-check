@@ -1,0 +1,60 @@
+diff --git a/node_modules/markdown-link-check/index.js b/node_modules/markdown-link-check/index.js
+index b4db1e8..08678e6 100644
+--- a/node_modules/markdown-link-check/index.js
++++ b/node_modules/markdown-link-check/index.js
+@@ -25,7 +25,7 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
+         }, markdown);
+     }
+ 
+-    const linksCollection = _.uniq(markdownLinkExtractor(markdown));
++    const linksCollection = _.uniq(markdownLinkExtractor(markdown, opts.additionalTokenizer));
+     const bar = (opts.showProgressBar) ?
+         new ProgressBar('Checking... [:bar] :percent', {
+             complete: '=',
+diff --git a/node_modules/markdown-link-check/markdown-link-check b/node_modules/markdown-link-check/markdown-link-check
+index fbe9520..357b19e 100755
+--- a/node_modules/markdown-link-check/markdown-link-check
++++ b/node_modules/markdown-link-check/markdown-link-check
+@@ -17,7 +17,7 @@ const statusLabels = {
+     error: chalk.yellow('⚠'),
+ };
+ 
+-const opts = {};
++let opts = {};
+ let filenameForOutput = '';
+ let stream = process.stdin; // read from stdin unless a filename is given
+ 
+@@ -90,29 +90,10 @@ stream
+     }
+ 
+     if (program.config) {
+-        fs.access(program.config, (fs.constants || fs).R_OK, function (err) {
+-            if (!err) {
+-                let configStream = fs.createReadStream(program.config);
+-                let configData = '';
+-
+-                configStream.on('data', function (chunk) {
+-                    configData += chunk.toString();
+-                }).on('end', function () {
+-                    let config = JSON.parse(configData);
+-
+-                    opts.ignorePatterns = config.ignorePatterns;
+-                    opts.replacementPatterns = config.replacementPatterns;
+-                    opts.httpHeaders = config.httpHeaders;
+-                    opts.ignoreDisable = config.ignoreDisable;
+-
+-                    runMarkdownLinkCheck(markdown, opts);
+-                });
+-            }
+-            else {
+-                console.error(chalk.red('\nERROR: Config file not accessible.'));
+-                process.exit(1);
+-            }
+-        });
++        const configPath = path.join(process.cwd(), program.config);
++        const additionalOpts = require(configPath);
++        opts = { ...opts, ...additionalOpts };
++        runMarkdownLinkCheck(markdown, opts);
+     }
+     else {
+         runMarkdownLinkCheck(markdown, opts);

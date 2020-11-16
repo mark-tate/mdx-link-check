@@ -1,2 +1,2 @@
-# mdx-link-extractor
+# mdx-link-check
 Validate links within .mdx files

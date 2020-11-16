@@ -1,0 +1,31 @@
+{
+  "name": "mdx-link-check",
+  "version": "1.2.6",
+  "description": "validate links within .mdx files",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mark-tate/mdx-link-check"
+  },
+  "keywords": [
+    "mdx",
+    "link",
+    "validator",
+    "href"
+  ],
+  "author": "Mark Tate",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mark-tate/mdx-link-check/issues"
+  },
+  "homepage": "https://github.com/mark-tate/mdx-link-check",
+  "scripts": {
+    "postinstall": "patch-package"
+  },
+  "dependencies": {
+    "markdown-link-check": "^3.8.3"
+  },
+  "devDependencies": {
+    "patch-package": "^6.2.2"
+  }
+}
