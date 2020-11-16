@@ -1,0 +1,25 @@
+---
+id: example
+title: MDX Link Check Example
+---
+
+[I'm a valid inline internal link](example.mdx)
+[I'm an valid inline external link](https://www.google.com/ "Google's Homepage")
+[I'm an invalid inline internal link](doc3.md)
+[I'm an invalid inline external link](https://www.google-invalid-link.com/ "Google's Homepage")
+
+Check out my <Link to={'/link/1'}>Link content</Link>
+<Link to={'/link/2'}>Link content</Link>
+
+<Link to={'/link/3'}>Link content</Link>
+
+<a href={'https://www.mdx-link-validator-example.com/image'}><em>named link</em></a>
+
+<Link 
+    to={'/link/4'}
+>
+    Link content
+</Link>
+
+![img](./logo.svg)
+

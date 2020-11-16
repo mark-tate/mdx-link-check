@@ -1,5 +1,5 @@
 diff --git a/node_modules/markdown-link-extractor/index.js b/node_modules/markdown-link-extractor/index.js
-index a3888ce..42cc42a 100644
+index a3888ce..6b608a7 100644
 --- a/node_modules/markdown-link-extractor/index.js
 +++ b/node_modules/markdown-link-extractor/index.js
 @@ -2,7 +2,7 @@
@@ -13,7 +13,7 @@ index a3888ce..42cc42a 100644
      // Taken from https://github.com/markedjs/marked/issues/1279
 @@ -10,6 +10,9 @@ module.exports = function markdownLinkExtractor(markdown) {
      const image = /^!\[((?:\[[^\[\]]*\]|\\[\[\]]?|`[^`]*`|[^\[\]\\])*?)\]\(\s*(<(?:\\[<>]?|[^\s<>\\])*>|(?:\\[()]?|\([^\s\x00-\x1f()\\]*\)|[^\s\x00-\x1f()\\])*?(?:\s+=(?:[\w%]+)?x(?:[\w%]+)?)?)(?:\s+("(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)))?\s*\)$/;
-     
+ 
      const tokenizer = {
 +        react(src) {
 +            return additionalTokenizer(src);

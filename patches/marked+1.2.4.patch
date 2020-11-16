@@ -1,0 +1,50 @@
+diff --git a/node_modules/marked/src/Lexer.js b/node_modules/marked/src/Lexer.js
+index 27a740c..2b1d4e2 100644
+--- a/node_modules/marked/src/Lexer.js
++++ b/node_modules/marked/src/Lexer.js
+@@ -200,6 +200,13 @@ module.exports = class Lexer {
+         continue;
+       }
+ 
++      // react
++      if (token = this.tokenizer.react(src)) {
++        src = src.substring(token.raw.length);
++        tokens.push(token);
++        continue;
++      }
++      
+       // def
+       if (top && (token = this.tokenizer.def(src))) {
+         src = src.substring(token.raw.length);
+diff --git a/node_modules/marked/src/Parser.js b/node_modules/marked/src/Parser.js
+index 81fcb7d..eb8c7f8 100644
+--- a/node_modules/marked/src/Parser.js
++++ b/node_modules/marked/src/Parser.js
+@@ -161,6 +161,7 @@ module.exports = class Parser {
+           out += this.renderer.list(body, ordered, start);
+           continue;
+         }
++        case 'link':
+         case 'html': {
+           // TODO parse inline content if parameter markdown=1
+           out += this.renderer.html(token.text);
+diff --git a/node_modules/marked/src/rules.js b/node_modules/marked/src/rules.js
+index 13356df..50971a5 100644
+--- a/node_modules/marked/src/rules.js
++++ b/node_modules/marked/src/rules.js
+@@ -8,6 +8,7 @@ const {
+  * Block-Level Grammar
+  */
+ const block = {
++  react: /^ {0,3}(?:<[A-Z][a-zA-Z0-9]*\s*.?[^>]*>([^<]*)<\/[A-Z][a-zA-Z0-9]*>)/,
+   newline: /^\n+/,
+   code: /^( {4}[^\n]+\n*)+/,
+   fences: /^ {0,3}(`{3,}(?=[^`\n]*\n)|~{3,})([^\n]*)\n(?:|([\s\S]*?)\n)(?: {0,3}\1[~`]* *(?:\n+|$)|$)/,
+@@ -160,6 +161,7 @@ block.pedantic = merge({}, block.normal, {
+  * Inline-Level Grammar
+  */
+ const inline = {
++  react: /<[A-Z][a-zA-Z0-9]*\s*.?[^>]*>([^<]*)<\/[A-Z][a-zA-Z0-9]*>/,
+   escape: /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/,
+   autolink: /^<(scheme:[^\s\x00-\x1f<>]*|email)>/,
+   url: noopTest,
